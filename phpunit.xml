@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.0/phpunit.xsd"
+  beStrictAboutOutputDuringTests="true"
+  cacheDirectory=".phpunit.cache"
+  colors="true"
+  displayDetailsOnTestsThatTriggerDeprecations="true"
+  displayDetailsOnTestsThatTriggerNotices="true"
+  displayDetailsOnTestsThatTriggerWarnings="true"
+  displayDetailsOnTestsThatTriggerErrors="true"
+  displayDetailsOnIncompleteTests="true"
+  displayDetailsOnSkippedTests="true"
+  executionOrder="random"
+  failOnDeprecation="true"
+  failOnNotice="true"
+  failOnWarning="true"
+  failOnRisky="true"
+  failOnEmptyTestSuite="true"
+>
+
+  <source>
+    <include>
+      <directory>./classes</directory>
+    </include>
+  </source>
+
+  <testsuites>
+    <testsuite name="Tests">
+      <directory>tests/</directory>
+    </testsuite>
+  </testsuites>
+
+  <coverage ignoreDeprecatedCodeUnits="true"/>
+
+</phpunit>

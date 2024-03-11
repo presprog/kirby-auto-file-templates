@@ -1,0 +1,40 @@
+{
+  "name": "presprog/my-kirby-plugin",
+  "description": "Describe your plugin here",
+  "license": "MIT",
+  "type": "kirby-plugin",
+  "authors": [
+    {
+      "name": "Benedict Massolle",
+      "email": "bm@presentprogressive.de",
+      "homepage": "https://presentprogressive.de"
+    }
+  ],
+  "require": {
+    "getkirby/composer-installer": "^1.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "PresProg\\MyPlugin\\": "classes/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "getkirby/composer-installer": true
+    },
+    "optimize-autoloader": true
+  },
+  "extra": {
+    "installer-name": "my-plugin"
+  },
+  "scripts": {
+    "analyze": [
+      "@tests",
+      "@psalm"
+    ],
+    "csfix": "@php tools/phpcs/vendor/bin/php-cs-fixer fix",
+    "psalm": "@php tools/psalm/vendor/bin/psalm",
+    "tests": "@php tools/phpunit/vendor/bin/phpunit",
+    "tools": "@php tools/tools.php"
+  }
+}
