@@ -3,7 +3,7 @@
         'name' => 'presprog/kirby-auto-file-templates',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '3d149b4c1e05912ada4bfd9603e13cc83f612e03',
+        'reference' => '1b60800f5eddbeda23433d7fff53a75a7774d749',
         'type' => 'kirby-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'presprog/kirby-auto-file-templates' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '3d149b4c1e05912ada4bfd9603e13cc83f612e03',
+            'reference' => '1b60800f5eddbeda23433d7fff53a75a7774d749',
             'type' => 'kirby-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
