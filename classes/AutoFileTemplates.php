@@ -35,12 +35,14 @@ readonly class AutoFileTemplates
         if (($templates = $this->options->templates) && \array_key_exists($file->type(), $templates)) {
             $template = $templates[$file->type()];
 
-            if (\is_callable($template)) {
-                $template = $template($file);
-            }
-
+            // First check for `string` and `null`, then `callable`.
+            // Otherwise, some strings may be interpreted as callables unexpectedly
             if (\is_string($template) || \is_null($template)) {
                 return $template;
+            }
+
+            if (\is_callable($template)) {
+                return $template($file);
             }
 
             return null;

@@ -75,6 +75,33 @@ class AutoFileTemplatesTest extends TestCase
         $this->assertEquals(null, $template);
     }
 
+    public function testSetTemplateFromString(): void
+    {
+        $options = [
+            'autoAssign' => true,
+            'templates' => [
+                'image' => 'vector',
+            ],
+        ];
+
+        $kirby = new App([
+            'roots' => [
+                'index' => self::$tmpDir,
+            ],
+            'options' => [
+                'presprog.auto-file-templates' => $options,
+            ],
+        ]);
+
+        $service = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
+
+        // File is of type image, but we expect `vector` to be applied here
+        $image = new File(['type' => 'image', 'filename' => 'image.svg', 'parent' => self::page()]);
+
+        $this->assertEquals('vector', $service->autoAssign($image));
+    }
+
+
     public function testTemplatesAsCallable(): void
     {
         $kirby = new App([
