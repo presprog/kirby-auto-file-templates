@@ -9,7 +9,7 @@ class ComposerStaticInit8e54bd0e593d27f040c77cab1f9b5684
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
-            'PresProg\\MyPlugin\\' => 18,
+            'PresProg\\AutoFileTemplates\\' => 27,
         ),
         'K' => 
         array (
@@ -18,7 +18,7 @@ class ComposerStaticInit8e54bd0e593d27f040c77cab1f9b5684
     );
 
     public static $prefixDirsPsr4 = array (
-        'PresProg\\MyPlugin\\' => 
+        'PresProg\\AutoFileTemplates\\' => 
         array (
             0 => __DIR__ . '/../..' . '/classes',
         ),

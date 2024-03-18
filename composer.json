@@ -1,6 +1,6 @@
 {
-  "name": "presprog/my-kirby-plugin",
-  "description": "Describe your plugin here",
+  "name": "presprog/kirby-auto-file-templates",
+  "description": "Automatically assign file templates on upload based on the file type",
   "license": "MIT",
   "type": "kirby-plugin",
   "authors": [
@@ -15,7 +15,7 @@
   },
   "autoload": {
     "psr-4": {
-      "PresProg\\MyPlugin\\": "classes/"
+      "PresProg\\AutoFileTemplates\\": "classes/"
     }
   },
   "config": {
@@ -25,7 +25,7 @@
     "optimize-autoloader": true
   },
   "extra": {
-    "installer-name": "my-plugin"
+    "installer-name": "auto-file-templates"
   },
   "scripts": {
     "analyze": [
@@ -34,7 +34,7 @@
     ],
     "csfix": "@php tools/phpcs/vendor/bin/php-cs-fixer fix",
     "psalm": "@php tools/psalm/vendor/bin/psalm",
-    "tests": "@php tools/phpunit/vendor/bin/phpunit",
+    "tests": "@php tools/phpunit/vendor/bin/phpunit --bootstrap=tests/bootstrap.php",
     "tools": "@php tools/tools.php"
   }
 }

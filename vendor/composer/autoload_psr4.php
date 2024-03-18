@@ -6,6 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'PresProg\\MyPlugin\\' => array($baseDir . '/classes'),
+    'PresProg\\AutoFileTemplates\\' => array($baseDir . '/classes'),
     'Kirby\\' => array($vendorDir . '/getkirby/composer-installer/src'),
 );

@@ -1,1 +1,1 @@
-panel.plugin("presprog/my-kirby-plugin", {})
+panel.plugin("presprog/auto-file-templates", {})
