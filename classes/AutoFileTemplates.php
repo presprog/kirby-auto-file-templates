@@ -14,7 +14,7 @@ readonly class AutoFileTemplates
         private PluginOptions $options,
     ) {}
 
-    public function getTemplateFromType(File $file): ?string
+    public function autoAssign(File $file): ?string
     {
         if ($this->options->autoAssign === false) {
             return null;
@@ -22,6 +22,30 @@ readonly class AutoFileTemplates
 
         // Virtual admin user
         $this->kirby->impersonate('kirby');
+
+        if ($template = $this->getTemplateForFile($file)) {
+            $file->update(['template' => $template]);
+            $file->save();
+        }
+
+        return $template;
+    }
+
+    private function getTemplateForFile(File $file): ?string
+    {
+        if (($templates = $this->options->templates) && \array_key_exists($file->type(), $templates)) {
+            $template = $templates[$file->type()];
+
+            if (\is_callable($template)) {
+                $template = $template($file);
+            }
+
+            if (\is_string($template) || \is_null($template)) {
+                return $template;
+            }
+
+            return null;
+        }
 
         $template = $file->type();
 
@@ -32,9 +56,6 @@ readonly class AutoFileTemplates
         if (!$this->templateExists($template)) {
             return null;
         }
-
-        $file->update(['template' => $template]);
-        $file->save();
 
         return $template;
     }
@@ -49,6 +70,4 @@ readonly class AutoFileTemplates
         $blueprints = $this->kirby->blueprints('files');
         return in_array($template, $blueprints, true);
     }
-
-
 }

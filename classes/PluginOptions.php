@@ -4,7 +4,7 @@ namespace PresProg\AutoFileTemplates;
 
 readonly class PluginOptions
 {
-    public function __construct(public bool $autoAssign) {}
+    public function __construct(public bool $autoAssign, public array $templates) {}
 
     public static function createFromOptions(array $options): self
     {
@@ -12,6 +12,7 @@ readonly class PluginOptions
 
         return new self(
             autoAssign: $pluginOptions['autoAssign'] ?? true,
+            templates: $pluginOptions['templates'] ?? [],
         );
     }
 }

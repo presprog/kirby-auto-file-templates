@@ -51,7 +51,7 @@ class AutoFileTemplatesTest extends TestCase
         ]);
 
         $service  = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
-        $template = $service->getTemplateFromType($file);
+        $template = $service->autoAssign($file);
         $this->assertEquals($expected, $template);
     }
 
@@ -71,8 +71,39 @@ class AutoFileTemplatesTest extends TestCase
         $file = $this->file();
 
         $service  = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
-        $template = $service->getTemplateFromType($file);
+        $template = $service->autoAssign($file);
         $this->assertEquals(null, $template);
+    }
+
+    public function testTemplatesAsCallable(): void
+    {
+        $kirby = new App([
+            'roots' => [
+                'index' => self::$tmpDir,
+            ],
+            'options' => [
+                'presprog.auto-file-templates' => [
+                    'autoAssign' => true,
+                    'templates' => [
+                        'image' => function (File $file) {
+                            return match (F::extension($file->filename())) {
+                                'svg' => 'vector',
+                                default => 'image',
+                            };
+                        },
+                    ],
+                ],
+            ],
+        ]);
+
+        $service = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
+
+        // Both files are of type `image` but will get have different tempaltes assigned based on their extension
+        $image  = new File(['type' => 'image', 'filename' => 'image.jpg', 'parent' => self::page()]);
+        $vector = new File(['type' => 'image', 'filename' => 'image.svg', 'parent' => self::page()]);
+
+        $this->assertEquals('image', $service->autoAssign($image));
+        $this->assertEquals('vector', $service->autoAssign($vector));
     }
 
     public static function files(): \Generator
