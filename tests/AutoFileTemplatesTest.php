@@ -19,7 +19,7 @@ class AutoFileTemplatesTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$tmpDir   = __DIR__ . '/temp';
+        self::$tmpDir = __DIR__ . '/temp';
 
     }
 
@@ -28,7 +28,7 @@ class AutoFileTemplatesTest extends TestCase
         // Do not register any error handler
         App::$enableWhoops = false;
 
-        Dir::copy(__DIR__. '/fixtures', self::$tmpDir);
+        Dir::copy(__DIR__ . '/fixtures', self::$tmpDir);
     }
 
     protected function tearDown(): void
@@ -43,16 +43,42 @@ class AutoFileTemplatesTest extends TestCase
             'roots' => [
                 'index' => self::$tmpDir,
             ],
+            'options' => [
+                'presprog.auto-file-templates' => [
+                    'autoAssign' => true,
+                ],
+            ],
         ]);
 
-        $service  = new AutoFileTemplates($kirby, PluginOptions::createFromOptions([]));
+        $service  = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
         $template = $service->getTemplateFromType($file);
         $this->assertEquals($expected, $template);
     }
 
+    public function testDoesNothingIfTurnedOffByOption(): void
+    {
+        $kirby = new App([
+            'roots' => [
+                'index' => self::$tmpDir,
+            ],
+            'options' => [
+                'presprog.auto-file-templates' => [
+                    'autoAssign' => false,
+                ],
+            ],
+        ]);
+
+        $file = $this->file();
+
+        $service  = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
+        $template = $service->getTemplateFromType($file);
+        $this->assertEquals(null, $template);
+    }
+
     public static function files(): \Generator
     {
-        $page = new Page(['title' => 'Test', 'slug' => 'test']);
+        $page = self::page();
+
         // No template will be set
         yield 'archive' => [new File(['type' => 'archive', 'filename' => 'archive.zip', 'parent' => $page]), null];
 
@@ -62,5 +88,15 @@ class AutoFileTemplatesTest extends TestCase
         yield 'document' => [new File(['type' => 'document', 'filename' => 'document.pdf', 'parent' => $page]), 'document'];
         yield 'image' => [new File(['type' => 'image', 'filename' => 'image.jpg', 'parent' => $page]), 'image'];
         yield 'video' => [new File(['type' => 'video', 'filename' => 'video.mp4', 'parent' => $page]), 'video'];
+    }
+
+    public function file(): File
+    {
+        return new File(['type' => 'image', 'filename' => 'image.jpg', 'parent' => self::page()]);
+    }
+
+    public static function page(): Page
+    {
+        return new Page(['title' => 'Test', 'slug' => 'test']);
     }
 }
