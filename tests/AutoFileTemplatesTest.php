@@ -106,6 +106,32 @@ class AutoFileTemplatesTest extends TestCase
         $this->assertEquals('vector', $service->autoAssign($vector));
     }
 
+    public function testTurnOffAutoAssignForOneFileType(): void
+    {
+        $kirby = new App([
+            'roots' => [
+                'index' => self::$tmpDir,
+            ],
+            'options' => [
+                'presprog.auto-file-templates' => [
+                    'autoAssign' => [
+                        'image' => false,
+                    ],
+                ],
+            ],
+        ]);
+
+        $service  = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
+
+        // Auto-assigning a template for `image` is disabled, but `document` should just work fine
+        $image    = new File(['type' => 'image', 'filename' => 'image.jpg', 'parent' => self::page()]);
+        $document = new File(['type' => 'document', 'filename' => 'document.pdf', 'parent' => self::page()]);
+
+        $this->assertEquals(null, $service->autoAssign($image));
+        $this->assertEquals('document', $service->autoAssign($document));
+    }
+
+
     public static function files(): \Generator
     {
         $page = self::page();

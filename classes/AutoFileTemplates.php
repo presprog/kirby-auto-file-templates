@@ -15,7 +15,7 @@ readonly class AutoFileTemplates
 
     public function autoAssign(File $file): ?string
     {
-        if ($this->options->autoAssign === false) {
+        if (!$this->shouldAutoAssign($file)) {
             return null;
         }
 
@@ -34,6 +34,10 @@ readonly class AutoFileTemplates
     {
         if (($templates = $this->options->templates) && \array_key_exists($file->type(), $templates)) {
             $template = $templates[$file->type()];
+
+            if ($template === false) {
+                return null;
+            }
 
             if (\is_callable($template)) {
                 $template = $template($file);
@@ -69,4 +73,18 @@ readonly class AutoFileTemplates
         $blueprints = $this->kirby->blueprints('files');
         return in_array($template, $blueprints, true);
     }
+
+    private function shouldAutoAssign(File $file): bool
+    {
+        if (\is_bool($this->options->autoAssign)) {
+            return $this->options->autoAssign;
+        }
+
+        if (\is_array($this->options->autoAssign)) {
+            return $this->options->autoAssign[$file->type()] ?? true;
+        }
+
+        return true;
+    }
+
 }
