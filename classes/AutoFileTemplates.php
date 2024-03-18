@@ -10,8 +10,8 @@ use Kirby\Filesystem\F;
 readonly class AutoFileTemplates
 {
     public function __construct(
-        private readonly App $kirby,
-        private readonly PluginOptions $options,
+        private App $kirby,
+        private PluginOptions $options,
     ) {}
 
     public function getTemplateFromType(File $file): ?string
@@ -39,10 +39,6 @@ readonly class AutoFileTemplates
         return $template;
     }
 
-    /**
-     * @param string|null $template
-     * @return bool
-     */
     private function typeExists(?string $template): bool
     {
         return array_key_exists($template, F::$types);

@@ -15,3 +15,4 @@ readonly class PluginOptions
         );
     }
 }
+
