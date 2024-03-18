@@ -11,7 +11,8 @@ readonly class AutoFileTemplates
     public function __construct(
         private App $kirby,
         private PluginOptions $options,
-    ) {}
+    ) {
+    }
 
     public function autoAssign(File $file): ?string
     {

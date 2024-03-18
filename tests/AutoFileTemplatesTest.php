@@ -57,14 +57,16 @@ class AutoFileTemplatesTest extends TestCase
 
     public function testDoesNothingIfTurnedOffByOption(): void
     {
+        $options = [
+            'autoAssign' => false,
+        ];
+
         $kirby = new App([
             'roots' => [
                 'index' => self::$tmpDir,
             ],
             'options' => [
-                'presprog.auto-file-templates' => [
-                    'autoAssign' => false,
-                ],
+                'presprog.auto-file-templates' => $options,
             ],
         ]);
 
@@ -79,7 +81,7 @@ class AutoFileTemplatesTest extends TestCase
     {
         $options = [
             'autoAssign' => true,
-            'templates' => [
+            'templates'  => [
                 'image' => 'vector',
             ],
         ];
@@ -104,22 +106,24 @@ class AutoFileTemplatesTest extends TestCase
 
     public function testTemplatesAsCallable(): void
     {
+        $options = [
+            'autoAssign' => true,
+            'templates'  => [
+                'image' => function (File $file) {
+                    return match (F::extension($file->filename())) {
+                        'svg'   => 'vector',
+                        default => 'image',
+                    };
+                },
+            ],
+        ];
+
         $kirby = new App([
             'roots' => [
                 'index' => self::$tmpDir,
             ],
             'options' => [
-                'presprog.auto-file-templates' => [
-                    'autoAssign' => true,
-                    'templates' => [
-                        'image' => function (File $file) {
-                            return match (F::extension($file->filename())) {
-                                'svg' => 'vector',
-                                default => 'image',
-                            };
-                        },
-                    ],
-                ],
+                'presprog.auto-file-templates' => $options,
             ],
         ]);
 
@@ -135,20 +139,22 @@ class AutoFileTemplatesTest extends TestCase
 
     public function testTurnOffAutoAssignForOneFileType(): void
     {
+        $options = [
+            'autoAssign' => [
+                'image' => false,
+            ],
+        ];
+
         $kirby = new App([
             'roots' => [
                 'index' => self::$tmpDir,
             ],
             'options' => [
-                'presprog.auto-file-templates' => [
-                    'autoAssign' => [
-                        'image' => false,
-                    ],
-                ],
+                'presprog.auto-file-templates' => $options,
             ],
         ]);
 
-        $service  = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
+        $service = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
 
         // Auto-assigning a template for `image` is disabled, but `document` should just work fine
         $image    = new File(['type' => 'image', 'filename' => 'image.jpg', 'parent' => self::page()]);
