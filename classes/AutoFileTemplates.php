@@ -3,7 +3,6 @@
 namespace PresProg\AutoFileTemplates;
 
 use Kirby\Cms\App;
-use Kirby\Cms\Blueprint;
 use Kirby\Cms\File;
 use Kirby\Filesystem\F;
 
