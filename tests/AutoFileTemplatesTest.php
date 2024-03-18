@@ -164,6 +164,28 @@ class AutoFileTemplatesTest extends TestCase
         $this->assertEquals('document', $service->autoAssign($document));
     }
 
+    public function testDoNotOverwriteExistingTemplate(): void
+    {
+        $options = [
+            'autoAssign' => true,
+        ];
+
+        $kirby = new App([
+            'roots' => [
+                'index' => self::$tmpDir,
+            ],
+            'options' => [
+                'presprog.auto-file-templates' => $options,
+            ],
+        ]);
+
+        $service = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
+
+        $image    = new File(['type' => 'image', 'filename' => 'image.jpg', 'parent' => self::page(), 'template' => 'photo']);
+
+        $this->assertEquals(null, $service->autoAssign($image));
+        $this->assertEquals('photo', $image->template());
+    }
 
     public static function files(): \Generator
     {

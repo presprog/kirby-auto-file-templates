@@ -20,6 +20,11 @@ readonly class AutoFileTemplates
             return null;
         }
 
+        // Do not overwrite existing templates
+        if ($file->template() !== null) {
+            return null;
+        }
+
         // Virtual admin user
         $this->kirby->impersonate('kirby');
 
