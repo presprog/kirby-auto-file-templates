@@ -48,7 +48,7 @@ readonly class AutoFileTemplates
 
         $template = $file->type();
 
-        if (!$this->typeExists($template)) {
+        if (!$this->fileTypeExists($template)) {
             return null;
         }
 
@@ -59,9 +59,9 @@ readonly class AutoFileTemplates
         return $template;
     }
 
-    private function typeExists(?string $template): bool
+    private function fileTypeExists(?string $type): bool
     {
-        return array_key_exists($template, F::$types);
+        return array_key_exists($type, F::$types);
     }
 
     private function templateExists(?string $template): bool
