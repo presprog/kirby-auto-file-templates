@@ -3,30 +3,33 @@
 namespace PresProg\AutoFileTemplates;
 
 use Kirby\Cms\App;
+use Kirby\Cms\Blueprint;
 use Kirby\Cms\File;
+use Kirby\Filesystem\F;
 
-class AutoFileTemplates
+readonly class AutoFileTemplates
 {
     public function __construct(
-        private App $kirby,
-        private PluginOptions $options,
+        private readonly App $kirby,
+        private readonly PluginOptions $options,
     ) {}
 
-    public function setTemplate(File $file): ?string
+    public function getTemplateFromType(File $file): ?string
     {
+        if ($this->options->autoAssign === false) {
+            return null;
+        }
+
+        // Virtual admin user
         $this->kirby->impersonate('kirby');
 
-        $template = match ($file->type()) {
-            'audio' => 'audio',
-            'archive' => 'archive',
-            'code' => 'code',
-            'document' => 'document',
-            'image' => 'image',
-            'video' => 'video',
-            default => null,
-        };
+        $template = $file->type();
 
-        if (!$template) {
+        if (!$this->typeExists($template)) {
+            return null;
+        }
+
+        if (!$this->templateExists($template)) {
             return null;
         }
 
@@ -35,4 +38,21 @@ class AutoFileTemplates
 
         return $template;
     }
+
+    /**
+     * @param string|null $template
+     * @return bool
+     */
+    private function typeExists(?string $template): bool
+    {
+        return array_key_exists($template, F::$types);
+    }
+
+    private function templateExists(?string $template): bool
+    {
+        $blueprints = $this->kirby->blueprints('files');
+        return in_array($template, $blueprints, true);
+    }
+
+
 }

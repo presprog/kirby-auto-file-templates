@@ -6,6 +6,7 @@ use Kirby\Cms\App;
 use Kirby\Cms\File;
 use Kirby\Cms\Page;
 use Kirby\Filesystem\Dir;
+use Kirby\Filesystem\F;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use PresProg\AutoFileTemplates\AutoFileTemplates;
@@ -36,7 +37,7 @@ class AutoFileTemplatesTest extends TestCase
     }
 
     #[DataProvider('files')]
-    public function testSetsTemplate(File $file, string $expected): void
+    public function testSetsTemplateBasedOnCoreFileTypes(File $file, ?string $expected): void
     {
         $kirby = new App([
             'roots' => [
@@ -45,13 +46,17 @@ class AutoFileTemplatesTest extends TestCase
         ]);
 
         $service  = new AutoFileTemplates($kirby, PluginOptions::createFromOptions([]));
-        $template = $service->setTemplate($file);
+        $template = $service->getTemplateFromType($file);
         $this->assertEquals($expected, $template);
     }
 
     public static function files(): \Generator
     {
         $page = new Page(['title' => 'Test', 'slug' => 'test']);
+        // No template will be set
+        yield 'archive' => [new File(['type' => 'archive', 'filename' => 'archive.zip', 'parent' => $page]), null];
+
+        // Templates will be set
         yield 'audio' => [new File(['type' => 'audio', 'filename' => 'audio.mp3', 'parent' => $page]), 'audio'];
         yield 'code' => [new File(['type' => 'code', 'filename' => 'code.php', 'parent' => $page]), 'code'];
         yield 'document' => [new File(['type' => 'document', 'filename' => 'document.pdf', 'parent' => $page]), 'document'];
