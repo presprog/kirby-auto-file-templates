@@ -35,10 +35,6 @@ readonly class AutoFileTemplates
         if (($templates = $this->options->templates) && \array_key_exists($file->type(), $templates)) {
             $template = $templates[$file->type()];
 
-            if ($template === false) {
-                return null;
-            }
-
             if (\is_callable($template)) {
                 $template = $template($file);
             }
