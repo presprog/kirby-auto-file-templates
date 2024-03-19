@@ -39,6 +39,7 @@
     "psalm": "@php tools/psalm/vendor/bin/psalm",
     "phpmd": "@php tools/phpmd/vendor/bin/phpmd . ansi phpmd.xml --exclude tools/*,tests/*,vendor/",
     "tests": "@php tools/phpunit/vendor/bin/phpunit --bootstrap=tests/bootstrap.php",
+    "tests:coverage": "XDEBUG_MODE=coverage tools/phpunit/vendor/bin/phpunit --bootstrap=tests/bootstrap.php --coverage-html=tests/coverage",
     "tools": "@php tools/tools.php"
   }
 }
