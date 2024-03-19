@@ -39,4 +39,4 @@ jobs:
       run: composer run-script tools install
 
     - name: Run test suite
-      run: composer run-script test
+      run: composer run-script tests
