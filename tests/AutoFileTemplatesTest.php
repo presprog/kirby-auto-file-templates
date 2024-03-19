@@ -55,6 +55,69 @@ class AutoFileTemplatesTest extends TestCase
         $this->assertEquals($expected, $template);
     }
 
+    public function testFileUpdatedMethodIsCalledOnce(): void
+    {
+        $kirby = new App([
+            'roots' => [
+                'index' => self::$tmpDir,
+            ],
+            'options' => [
+                'presprog.auto-file-templates' => [
+                    'autoAssign' => true,
+                ],
+            ],
+        ]);
+
+        $service  = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
+
+        // File One: An image file without a template
+        $fileOneProps = ['type' => 'image', 'filename' => 'image.png', 'parent' => self::page()];
+
+        $fileOne = $this->getMockBuilder(File::class)
+                     ->disableOriginalConstructor()
+                     ->setConstructorArgs($fileOneProps)
+                     ->getMock()
+        ;
+
+        $fileOne->expects($this->once())
+             ->method('update')
+             ->with(['template' => 'image'])
+        ;
+
+        $fileOne->method('type')
+             ->willReturn($fileOneProps['type'])
+        ;
+
+
+        $templateOne = $service->autoAssign($fileOne);
+        $this->assertEquals('image', $templateOne);
+
+        // File Two  An image file with template `photo` (will not be updated)
+
+        $fileTwoProps = ['type' => 'image', 'filename' => 'image.png', 'parent' => self::page(), 'template' => 'photo'];
+
+        $fileTwo = $this->getMockBuilder(File::class)
+                        ->disableOriginalConstructor()
+                        ->setConstructorArgs($fileTwoProps)
+                        ->getMock()
+        ;
+
+        $fileTwo->method('template')
+                ->willReturn($fileTwoProps['template'])
+        ;
+
+        $fileTwo->expects($this->never())
+                ->method('update')
+        ;
+
+        $fileTwo->method('type')
+                ->willReturn($fileTwoProps['type'])
+        ;
+
+        $templateTwo = $service->autoAssign($fileTwo);
+        $this->assertEquals(null, $templateTwo);
+    }
+
     public function testDoesNothingIfTurnedOffByOption(): void
     {
         $options = [
