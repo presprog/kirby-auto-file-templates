@@ -209,6 +209,27 @@ class AutoFileTemplatesTest extends TestCase
         $this->assertEquals('image', $service->autoAssign($image));
     }
 
+    public function testFileTypeCannotBeDetermined(): void
+    {
+        $options = [
+            'autoAssign' => true,
+        ];
+
+        $kirby = new App([
+            'roots' => [
+                'index' => self::$tmpDir,
+            ],
+            'options' => [
+                'presprog.auto-file-templates' => $options,
+            ],
+        ]);
+
+        $service = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
+        $image   = new File(['type' => 'sometype', 'filename' => 'file', 'parent' => self::page()]);
+
+        $this->assertEquals(null, $service->autoAssign($image));
+    }
+
     public static function files(): \Generator
     {
         $page = self::page();
