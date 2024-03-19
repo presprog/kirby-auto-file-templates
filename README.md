@@ -1,3 +1,5 @@
+![Kirby Auto File Templates Plugin](/.github/banner.png)
+
 # Automatically assign templates to your uploaded files
 
 > ⚡ Ready for Kirby 4!
