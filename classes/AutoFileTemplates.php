@@ -8,15 +8,18 @@ use Kirby\Filesystem\F;
 
 readonly class AutoFileTemplates
 {
+    private array $templateMap;
+
     public function __construct(
         private App $kirby,
         private PluginOptions $options,
     ) {
+        $this->templateMap = $this->getTemplateMap($options->autoAssign);
     }
 
     public function autoAssign(File $file): ?string
     {
-        if (!$this->shouldAutoAssign($file)) {
+        if ($this->options->autoAssign === false) {
             return null;
         }
 
@@ -38,42 +41,30 @@ readonly class AutoFileTemplates
 
     private function getTemplateForFile(File $file): ?string
     {
-        if (is_array($this->options->autoAssign) && \array_key_exists($file->type(), $this->options->autoAssign)) {
-            $template = $this->options->autoAssign[$file->type()] ?? null;
+        $template = null;
 
-            if (\is_bool($template) && $template === true) {
-                return $file->type();
+        if ($this->templateMap[$file->type()] ?? null) {
+            $option = $this->templateMap[$file->type()] ?? null;
+
+            // Use file type as template name
+            if ($option === true) {
+                $template = $file->type();
             }
 
-            // First check for `string` and `null`, then `callable`.
+            // Use specified templates
+            // Must check for `string` before `callable`.
             // Otherwise, some strings may be interpreted as callables unexpectedly
-            if (\is_string($template) || \is_null($template)) {
-                return $template;
+            if (\is_string($option)) {
+                $template = $option;
             }
 
-            if (\is_callable($template)) {
-                return $template($file);
+            // Use callable to determine template
+            if (\is_callable($option)) {
+                $template = $option($file);
             }
-
-            return null;
         }
 
-        $template = $file->type();
-
-        if (!$this->fileTypeExists($template)) {
-            return null;
-        }
-
-        if (!$this->templateExists($template)) {
-            return null;
-        }
-
-        return $template;
-    }
-
-    private function fileTypeExists(?string $type): bool
-    {
-        return array_key_exists($type, F::$types);
+        return $template !== null && $this->templateExists($template) ? $template : null;
     }
 
     private function templateExists(?string $template): bool
@@ -82,34 +73,18 @@ readonly class AutoFileTemplates
         return in_array($template, $blueprints, true);
     }
 
-    private function shouldAutoAssign(File $file): bool
+    private function getTemplateMap(bool|array $autoAssign): array
     {
-        if (\is_bool($this->options->autoAssign)) {
-            return $this->options->autoAssign;
+        $map = [];
+
+        foreach (\array_keys(F::$types) as $type) {
+            $map[$type] = \is_bool($autoAssign) ? $autoAssign : false;
         }
 
-        if (\is_array($this->options->autoAssign)) {
-            $template = $this->options->autoAssign[$file->type()] ?? null;
-
-            // Support template name
-            if (is_string($template)) {
-                return true;
-            }
-
-            // Support on/off toggle
-            if (is_bool($template)) {
-                return $template;
-            }
-
-            // Support callable that determines the template
-            if (\is_callable($template ?? null)) {
-                return true;
-            }
-
-            return false;
+        if (\is_array($autoAssign)) {
+            $map = \array_merge($map, $autoAssign);
         }
 
-        return true;
+        return $map;
     }
-
 }
