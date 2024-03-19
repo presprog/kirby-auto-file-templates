@@ -37,11 +37,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
-    - name: Install Symfony CLI
-      run: |
-        curl -sS https://get.symfony.com/cli/installer | bash
-        mv /home/runner/.symfony5/bin/symfony /usr/local/bin/symfony
-
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 

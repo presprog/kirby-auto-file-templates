@@ -15,6 +15,6 @@ foreach (new DirectoryIterator($toolsDir) as $tool) {
     }
 
     chdir($tool->getPathname());
-    exec(sprintf('symfony composer %s --ansi', $command));
+    exec(sprintf('%s %s %s --ansi', PHP_BINARY, '/usr/local/bin/composer', $command));
     chdir($toolsDir);
 }
