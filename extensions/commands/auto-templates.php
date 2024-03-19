@@ -19,6 +19,11 @@ return [
     'command' => function (CLI $cli) {
         $kirby = $cli->kirby();
 
+        if (is_null($kirby)) {
+            $cli->climate()->error('No Kirby instance – something\'s wrong here.');
+            return;
+        }
+
         // Virtual admin user
         $kirby->impersonate('kirby');
 
@@ -36,7 +41,7 @@ return [
             foreach ($page->files() as $file) {
                 $template = $autoTemplates->autoAssign($file);
 
-                if (!$template) {
+                if (is_null($template)) {
                     continue;
                 }
 
