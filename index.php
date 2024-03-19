@@ -10,7 +10,6 @@ use PresProg\AutoFileTemplates\PluginOptions;
 App::plugin('presprog/auto-file-templates', [
     'options' => [
         'autoAssign' => true,
-        'templates' => [],
     ],
     'commands' => [
         'auto-templates' => require __DIR__ . '/extensions/commands/auto-templates.php',
