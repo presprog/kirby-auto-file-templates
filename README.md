@@ -21,6 +21,8 @@ video.mp4: video
 > All files updated
 ```
 
+By default, existing template assignments will not be touched. To change that, run the command with `--force/-f` or set the `forceOverwrite` option globally in your `config.php` (see below).
+
 ## ⚙️ Config
 
 The plugin works in an opt-in manner: It does nothing except you tell it to.
@@ -56,6 +58,9 @@ The plugin works in an opt-in manner: It does nothing except you tell it to.
           };
       },
   ],
+
+  // Overwrite existing template assignments (default: false)
+  'forceOverwrite' => true,
 ],
 
 ```
