@@ -89,7 +89,6 @@ composer require presprog/kirby-auto-file-templates
 Or **download the ZIP file** from GitHub and unpack it to `site/plugins/kirby-auto-file-templates`
 
 ## ✅ To do
-*
 * [ ] Add multi-language support
 
 ## 📄 License
