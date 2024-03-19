@@ -80,8 +80,7 @@ class AutoFileTemplatesTest extends TestCase
     public function testSetTemplateFromString(): void
     {
         $options = [
-            'autoAssign' => true,
-            'templates'  => [
+            'autoAssign' => [
                 'image' => 'vector',
             ],
         ];
@@ -107,8 +106,7 @@ class AutoFileTemplatesTest extends TestCase
     public function testTemplatesAsCallable(): void
     {
         $options = [
-            'autoAssign' => true,
-            'templates'  => [
+            'autoAssign' => [
                 'image' => function (File $file) {
                     return match (F::extension($file->filename())) {
                         'svg'   => 'vector',
@@ -137,11 +135,11 @@ class AutoFileTemplatesTest extends TestCase
         $this->assertEquals('vector', $service->autoAssign($vector));
     }
 
-    public function testTurnOffAutoAssignForOneFileType(): void
+    public function testOnlyTurnOnAutoAssignForSomeFileTypes(): void
     {
         $options = [
             'autoAssign' => [
-                'image' => false,
+                'image' => true,
             ],
         ];
 
@@ -160,8 +158,8 @@ class AutoFileTemplatesTest extends TestCase
         $image    = new File(['type' => 'image', 'filename' => 'image.jpg', 'parent' => self::page()]);
         $document = new File(['type' => 'document', 'filename' => 'document.pdf', 'parent' => self::page()]);
 
-        $this->assertEquals(null, $service->autoAssign($image));
-        $this->assertEquals('document', $service->autoAssign($document));
+        $this->assertEquals('image', $service->autoAssign($image));
+        $this->assertEquals(null, $service->autoAssign($document));
     }
 
     public function testDoNotOverwriteExistingTemplate(): void

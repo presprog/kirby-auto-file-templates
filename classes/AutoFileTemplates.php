@@ -38,8 +38,12 @@ readonly class AutoFileTemplates
 
     private function getTemplateForFile(File $file): ?string
     {
-        if (($templates = $this->options->templates) && \array_key_exists($file->type(), $templates)) {
-            $template = $templates[$file->type()];
+        if (is_array($this->options->autoAssign) && \array_key_exists($file->type(), $this->options->autoAssign)) {
+            $template = $this->options->autoAssign[$file->type()] ?? null;
+
+            if (\is_bool($template) && $template === true) {
+                return $file->type();
+            }
 
             // First check for `string` and `null`, then `callable`.
             // Otherwise, some strings may be interpreted as callables unexpectedly
@@ -85,7 +89,24 @@ readonly class AutoFileTemplates
         }
 
         if (\is_array($this->options->autoAssign)) {
-            return $this->options->autoAssign[$file->type()] ?? true;
+            $template = $this->options->autoAssign[$file->type()] ?? null;
+
+            // Support template name
+            if (is_string($template)) {
+                return true;
+            }
+
+            // Support on/off toggle
+            if (is_bool($template)) {
+                return $template;
+            }
+
+            // Support callable that determines the template
+            if (\is_callable($template ?? null)) {
+                return true;
+            }
+
+            return false;
         }
 
         return true;
