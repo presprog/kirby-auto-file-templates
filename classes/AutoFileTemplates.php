@@ -33,7 +33,6 @@ readonly class AutoFileTemplates
 
         if ($template = $this->getTemplateForFile($file)) {
             $file->update(['template' => $template]);
-            $file->save();
         }
 
         return $template;
