@@ -1,0 +1,13 @@
+{
+  "require": {
+    "getkirby/cms": "^4.0"
+  },
+  "config": {
+    "allow-plugins": {
+      "getkirby/composer-installer": true
+    }
+  },
+  "extra": {
+    "kirby-cms-path": false
+  }
+}
