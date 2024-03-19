@@ -128,7 +128,7 @@ class AutoFileTemplatesTest extends TestCase
         $service = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
 
         // Both files are of type `image` but will get have different tempaltes assigned based on their extension
-        $image  = new File(['type' => 'image', 'filename' => 'image.jpg', 'parent' => self::page()]);
+        $image  = new File(['type' => 'image', 'filename' => 'image.png', 'parent' => self::page()]);
         $vector = new File(['type' => 'image', 'filename' => 'image.svg', 'parent' => self::page()]);
 
         $this->assertEquals('image', $service->autoAssign($image));
@@ -155,7 +155,7 @@ class AutoFileTemplatesTest extends TestCase
         $service = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
 
         // Auto-assigning a template for `image` is disabled, but `document` should just work fine
-        $image    = new File(['type' => 'image', 'filename' => 'image.jpg', 'parent' => self::page()]);
+        $image    = new File(['type' => 'image', 'filename' => 'image.png', 'parent' => self::page()]);
         $document = new File(['type' => 'document', 'filename' => 'document.pdf', 'parent' => self::page()]);
 
         $this->assertEquals('image', $service->autoAssign($image));
@@ -179,7 +179,7 @@ class AutoFileTemplatesTest extends TestCase
 
         $service = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
 
-        $image    = new File(['type' => 'image', 'filename' => 'image.jpg', 'parent' => self::page(), 'template' => 'photo']);
+        $image    = new File(['type' => 'image', 'filename' => 'image.png', 'parent' => self::page(), 'template' => 'photo']);
 
         $this->assertEquals(null, $service->autoAssign($image));
         $this->assertEquals('photo', $image->template());
@@ -196,13 +196,13 @@ class AutoFileTemplatesTest extends TestCase
         yield 'audio' => [new File(['type' => 'audio', 'filename' => 'audio.mp3', 'parent' => $page]), 'audio'];
         yield 'code' => [new File(['type' => 'code', 'filename' => 'code.php', 'parent' => $page]), 'code'];
         yield 'document' => [new File(['type' => 'document', 'filename' => 'document.pdf', 'parent' => $page]), 'document'];
-        yield 'image' => [new File(['type' => 'image', 'filename' => 'image.jpg', 'parent' => $page]), 'image'];
+        yield 'image' => [new File(['type' => 'image', 'filename' => 'image.png', 'parent' => $page]), 'image'];
         yield 'video' => [new File(['type' => 'video', 'filename' => 'video.mp4', 'parent' => $page]), 'video'];
     }
 
     public function file(): File
     {
-        return new File(['type' => 'image', 'filename' => 'image.jpg', 'parent' => self::page()]);
+        return new File(['type' => 'image', 'filename' => 'image.png', 'parent' => self::page()]);
     }
 
     public static function page(): Page
