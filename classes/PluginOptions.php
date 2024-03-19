@@ -10,7 +10,7 @@ readonly class PluginOptions
 
     public static function createFromOptions(array $options): self
     {
-        $pluginOptions = $options['presprog.auto-file-templates'];
+        $pluginOptions = $options['presprog.auto-file-templates'] ?? [];
 
         return new self(
             autoAssign: $pluginOptions['autoAssign'] ?? true,
