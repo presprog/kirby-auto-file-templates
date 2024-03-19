@@ -8,13 +8,27 @@ use PresProg\AutoFileTemplates\PluginOptions;
 
 return [
     'name' => 'auto-templates',
+    'args' => [
+      'force' => [
+          'prefix' => 'f',
+          'longPrefix' => 'force',
+          'noValue' => true,
+          'castTo' => 'bool',
+      ],
+    ],
     'command' => function (CLI $cli) {
         $kirby = $cli->kirby();
 
         // Virtual admin user
         $kirby->impersonate('kirby');
 
-        $autoTemplates = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
+        $options = $kirby->options();
+
+        if ($cli->arg('force') === true) {
+            $options['presprog.auto-file-templates']['forceOverwrite'] = true;
+        }
+
+        $autoTemplates = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($options));
 
         /** @var Page $page */
         foreach ($kirby->site()->index() as $page) {

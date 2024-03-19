@@ -24,7 +24,7 @@ readonly class AutoFileTemplates
         }
 
         // Do not overwrite existing templates
-        if ($file->template() !== null) {
+        if ($this->options->forceOverwrite === false && $file->template() !== null) {
             return null;
         }
 
