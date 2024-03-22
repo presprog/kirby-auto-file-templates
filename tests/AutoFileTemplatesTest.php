@@ -37,7 +37,7 @@ class AutoFileTemplatesTest extends TestCase
     }
 
     #[DataProvider('files')]
-    public function testSetsTemplateBasedOnCoreFileTypes(File $file, ?string $expected): void
+    public function testSetsTemplateForCoreFileTypes(File $file, ?string $expected): void
     {
         $kirby = new App([
             'roots' => [
@@ -55,7 +55,44 @@ class AutoFileTemplatesTest extends TestCase
         $this->assertEquals($expected, $template);
     }
 
-    public function testFileUpdatedMethodIsCalledOnce(): void
+    public function testSetsTemplateForCustomFileTypes(): void
+    {
+        $kirby = new App([
+            'roots' => [
+                'index' => self::$tmpDir,
+            ],
+            'options' => [
+                'presprog.auto-file-templates' => [
+                    'autoAssign' => true,
+                ],
+            ],
+        ]);
+
+        F::$types['custom-type'] = ['custom'];
+
+        $props = ['type' => 'custom-type', 'filename' => 'image.custom', 'parent' => self::page()];
+
+        $file = $this->getMockBuilder(File::class)
+                     ->disableOriginalConstructor()
+                     ->setConstructorArgs($props)
+                     ->getMock()
+        ;
+
+        $file->expects($this->once())
+             ->method('update')
+             ->with(['template' => 'custom-type'])
+        ;
+
+        $file->method('type')
+             ->willReturn($props['type'])
+        ;
+
+        $service  = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
+        $template = $service->autoAssign($file);
+        $this->assertEquals('custom-type', $template);
+    }
+
+    public function testFileIsUpdated(): void
     {
         $kirby = new App([
             'roots' => [
