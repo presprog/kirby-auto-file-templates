@@ -6,6 +6,9 @@
 
 This plugin automatically assigns file templates to your uploaded files, based on the respective file type. This way it does not matter, which file type you upload from which field or section – the template assigned will always be the same. This is especially handy, when you use a single files section per page, that stores all the different file types used on the page.
 
+> [!IMPORTANT]
+> Requires at least Kirby 4.0 and PHP 8.2
+
 ## How to use
 
 Set up your configuration (see next section) first. The plugin will then run after each uploaded file (`file.create:after` hook) and assign the configured template automatically.
