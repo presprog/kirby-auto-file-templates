@@ -1,6 +1,7 @@
 {
   "require": {
-    "getkirby/cms": "^4.0"
+    "getkirby/cms": "^4.0",
+    "getkirby/cli": "^1.4"
   },
   "config": {
     "allow-plugins": {

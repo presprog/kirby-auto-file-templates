@@ -9,7 +9,7 @@ This plugin automatically assigns file templates to your uploaded files, based o
 > [!IMPORTANT]
 > Requires at least Kirby 4.0 and PHP 8.2
 
-## How to use
+## 🚀 How to use
 
 Set up your configuration (see next section) first. The plugin will then run after each uploaded file (`file.create:after` hook) and assign the configured template automatically.
 

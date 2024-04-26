@@ -37,7 +37,7 @@ class AutoFileTemplatesTest extends TestCase
     }
 
     #[DataProvider('files')]
-    public function testSetsTemplateBasedOnCoreFileTypes(File $file, ?string $expected): void
+    public function testSetsTemplateForCoreFileTypes(File $file, ?string $expected): void
     {
         $kirby = new App([
             'roots' => [
@@ -53,6 +53,106 @@ class AutoFileTemplatesTest extends TestCase
         $service  = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
         $template = $service->autoAssign($file);
         $this->assertEquals($expected, $template);
+    }
+
+    public function testSetsTemplateForCustomFileTypes(): void
+    {
+        $kirby = new App([
+            'roots' => [
+                'index' => self::$tmpDir,
+            ],
+            'options' => [
+                'presprog.auto-file-templates' => [
+                    'autoAssign' => true,
+                ],
+            ],
+        ]);
+
+        F::$types['custom-type'] = ['custom'];
+
+        $props = ['type' => 'custom-type', 'filename' => 'image.custom', 'parent' => self::page()];
+
+        $file = $this->getMockBuilder(File::class)
+                     ->disableOriginalConstructor()
+                     ->setConstructorArgs($props)
+                     ->getMock()
+        ;
+
+        $file->expects($this->once())
+             ->method('update')
+             ->with(['template' => 'custom-type'])
+        ;
+
+        $file->method('type')
+             ->willReturn($props['type'])
+        ;
+
+        $service  = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
+        $template = $service->autoAssign($file);
+        $this->assertEquals('custom-type', $template);
+    }
+
+    public function testFileIsUpdated(): void
+    {
+        $kirby = new App([
+            'roots' => [
+                'index' => self::$tmpDir,
+            ],
+            'options' => [
+                'presprog.auto-file-templates' => [
+                    'autoAssign' => true,
+                ],
+            ],
+        ]);
+
+        $service  = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
+
+        // File One: An image file without a template
+        $fileOneProps = ['type' => 'image', 'filename' => 'image.png', 'parent' => self::page()];
+
+        $fileOne = $this->getMockBuilder(File::class)
+                     ->disableOriginalConstructor()
+                     ->setConstructorArgs($fileOneProps)
+                     ->getMock()
+        ;
+
+        $fileOne->expects($this->once())
+             ->method('update')
+             ->with(['template' => 'image'])
+        ;
+
+        $fileOne->method('type')
+             ->willReturn($fileOneProps['type'])
+        ;
+
+
+        $templateOne = $service->autoAssign($fileOne);
+        $this->assertEquals('image', $templateOne);
+
+        // File Two  An image file with template `photo` (will not be updated)
+
+        $fileTwoProps = ['type' => 'image', 'filename' => 'image.png', 'parent' => self::page(), 'template' => 'photo'];
+
+        $fileTwo = $this->getMockBuilder(File::class)
+                        ->disableOriginalConstructor()
+                        ->setConstructorArgs($fileTwoProps)
+                        ->getMock()
+        ;
+
+        $fileTwo->method('template')
+                ->willReturn($fileTwoProps['template'])
+        ;
+
+        $fileTwo->expects($this->never())
+                ->method('update')
+        ;
+
+        $fileTwo->method('type')
+                ->willReturn($fileTwoProps['type'])
+        ;
+
+        $templateTwo = $service->autoAssign($fileTwo);
+        $this->assertEquals(null, $templateTwo);
     }
 
     public function testDoesNothingIfTurnedOffByOption(): void
@@ -207,6 +307,27 @@ class AutoFileTemplatesTest extends TestCase
         $image    = new File(['type' => 'image', 'filename' => 'image.png', 'parent' => self::page(), 'template' => 'photo']);
 
         $this->assertEquals('image', $service->autoAssign($image));
+    }
+
+    public function testFileTypeCannotBeDetermined(): void
+    {
+        $options = [
+            'autoAssign' => true,
+        ];
+
+        $kirby = new App([
+            'roots' => [
+                'index' => self::$tmpDir,
+            ],
+            'options' => [
+                'presprog.auto-file-templates' => $options,
+            ],
+        ]);
+
+        $service = new AutoFileTemplates($kirby, PluginOptions::createFromOptions($kirby->options()));
+        $image   = new File(['type' => 'sometype', 'filename' => 'file', 'parent' => self::page()]);
+
+        $this->assertEquals(null, $service->autoAssign($image));
     }
 
     public static function files(): \Generator

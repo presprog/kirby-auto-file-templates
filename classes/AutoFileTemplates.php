@@ -31,7 +31,7 @@ readonly class AutoFileTemplates
         // Virtual admin user
         $this->kirby->impersonate('kirby');
 
-        if ($template = $this->getTemplateForFile($file)) {
+        if (($template = $this->getTemplateForFile($file)) !== null) {
             $file->update(['template' => $template]);
         }
 
@@ -41,13 +41,18 @@ readonly class AutoFileTemplates
     private function getTemplateForFile(File $file): ?string
     {
         $template = null;
+        $type     = $file->type();
 
-        if ($this->templateMap[$file->type()] ?? null) {
-            $option = $this->templateMap[$file->type()] ?? null;
+        if (is_null($type)) {
+            return null;
+        }
+
+        if (($this->templateMap[$type] ?? null) !== null) {
+            $option = $this->templateMap[$type];
 
             // Use file type as template name
             if ($option === true) {
-                $template = $file->type();
+                $template = $type;
             }
 
             // Use specified templates

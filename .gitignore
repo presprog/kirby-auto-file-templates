@@ -28,7 +28,10 @@
 /vendor/**/php4/*
 /vendor/getkirby/composer-installer
 
+# Tests
+/tests/coverage
+/.phpunit.cache
+
 # Tools
 /tools/**/vendor
 /.php-cs-fixer.cache
-/.phpunit.cache

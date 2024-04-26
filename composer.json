@@ -30,14 +30,17 @@
   },
   "scripts": {
     "analyze": [
+      "@composer-validate",
       "@tests",
       "@psalm",
       "@phpmd"
     ],
+    "composer-validate": "composer validate --strict --no-check-version --no-check-all",
     "csfix": "@php tools/phpcs/vendor/bin/php-cs-fixer fix",
-    "psalm": "@php tools/psalm/vendor/bin/psalm",
     "phpmd": "@php tools/phpmd/vendor/bin/phpmd . ansi phpmd.xml --exclude tools/*,tests/*,vendor/",
+    "psalm": "@php tools/psalm/vendor/bin/psalm",
     "tests": "@php tools/phpunit/vendor/bin/phpunit --bootstrap=tests/bootstrap.php",
+    "tests:coverage": "XDEBUG_MODE=coverage tools/phpunit/vendor/bin/phpunit --bootstrap=tests/bootstrap.php --coverage-html=tests/coverage",
     "tools": "@php tools/tools.php"
   }
 }
