@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'presprog/kirby-auto-file-templates',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => 'c4346ec1e1f1640d2ca8f89416d5e97b149bbf94',
+        'pretty_version' => '1.0.2',
+        'version' => '1.0.2.0',
+        'reference' => null,
         'type' => 'kirby-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'presprog/kirby-auto-file-templates' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => 'c4346ec1e1f1640d2ca8f89416d5e97b149bbf94',
+            'pretty_version' => '1.0.2',
+            'version' => '1.0.2.0',
+            'reference' => null,
             'type' => 'kirby-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
