@@ -83,13 +83,20 @@ With `auto-assign = true`, each file type will get the identically named file bl
 
 ## 💻 How to install
 
-Install this plugin via **Composer**:
+Install this plugin via **Composer** (recommended):
 
 ```bash
 composer require presprog/kirby-auto-file-templates
 ```
 
 Or **download the ZIP file** from GitHub and unpack it to `site/plugins/kirby-auto-file-templates`
+
+
+Or as **Git submodule**
+
+```bash
+git submodule add https://github.com/presprog/kirby-auto-file-templates.git site/plugins/auto-file-templates
+```
 
 ## ✅ To do
 * [ ] Add multi-language support
