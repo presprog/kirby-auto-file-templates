@@ -1,8 +1,8 @@
 <?php return array(
     'root' => array(
         'name' => 'presprog/kirby-auto-file-templates',
-        'pretty_version' => '1.0.2',
-        'version' => '1.0.2.0',
+        'pretty_version' => '1.0.1',
+        'version' => '1.0.1.0',
         'reference' => null,
         'type' => 'kirby-plugin',
         'install_path' => __DIR__ . '/../../',
@@ -20,8 +20,8 @@
             'dev_requirement' => false,
         ),
         'presprog/kirby-auto-file-templates' => array(
-            'pretty_version' => '1.0.2',
-            'version' => '1.0.2.0',
+            'pretty_version' => '1.0.1',
+            'version' => '1.0.1.0',
             'reference' => null,
             'type' => 'kirby-plugin',
             'install_path' => __DIR__ . '/../../',
