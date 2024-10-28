@@ -33,27 +33,27 @@ The plugin works in an opt-in manner: It does nothing except you tell it to.
 ```php
 // site/config/config.php
 
-'presprog/auto-file-templates' => [
+'presprog.auto-file-templates' => [
   // Do nothing (default)
-  'auto-assign' => false,
+  'autoAssign' => false,
 
   // OR automatically assign a file template for every file type
-  'auto-assign' => true,
+  'autoAssign' => true,
 
   // OR only assign templates to some file types (ignore file types other than `image` and `video`
-  'auto-assign' => [
+  'autoAssign' => [
       'image' => true,
       'video' => true,
   ],
 
   // OR define a specific template for just some file types and let the plugin decide for the others
-  'auto-assign' => [
+  'autoAssign' => [
       'image' => 'my-custom-image-blueprint',
       'video' => true, // => 'video'
   ],
 
   // OR handle more advanced use-cases in callable yourself (assign different file templates for vector and raster images)
-  'auto-assign' => [
+  'autoAssign' => [
       'image' => function(\Kirby\Cms\File $file) {
           return match (F::extension($file->filename())) {
               'svg'   => 'vector',
@@ -68,7 +68,7 @@ The plugin works in an opt-in manner: It does nothing except you tell it to.
 
 ```
 
-With `auto-assign = true`, each file type will get the identically named file blueprint assigned as template:
+With `autoAssign = true`, each file type will get the identically named file blueprint assigned as template:
 
 | File type | File blueprint                  |
 |-----------|---------------------------------|
