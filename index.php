@@ -17,7 +17,7 @@ App::plugin('presprog/auto-file-templates', [
     'hooks' => [
         'file.create:after' => function (File $file) {
             $options = PluginOptions::createFromOptions(kirby()->options());
-            return (new AutoFileTemplates(kirby(), $options))->autoAssign($file);
+            (new AutoFileTemplates(kirby(), $options))->autoAssign($file);
         },
     ],
 ]);
