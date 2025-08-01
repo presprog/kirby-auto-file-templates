@@ -24,7 +24,7 @@ readonly class AutoFileTemplates
         }
 
         // Do not overwrite existing templates
-        if ($this->options->forceOverwrite === false && $file->template() !== 'default') {
+        if ($this->options->forceOverwrite === false && $this->fileHasTemplate($file->template())) {
             return null;
         }
 
@@ -90,5 +90,9 @@ readonly class AutoFileTemplates
         }
 
         return $map;
+    }
+    private function fileHasTemplate(?string $template): bool
+    {
+        return $template !== null && $template !== 'default';
     }
 }
