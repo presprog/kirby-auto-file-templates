@@ -2,7 +2,7 @@
 
 # Automatically assign templates to your uploaded files
 
-> ⚡ Ready for Kirby 4!
+> ⚡ Ready for Kirby 5!
 
 This plugin automatically assigns file templates to your uploaded files, based on the respective file type. This way it does not matter, which file type you upload from which field or section – the template assigned will always be the same. This is especially handy, when you use a single files section per page, that stores all the different file types used on the page.
 
@@ -103,7 +103,7 @@ git submodule add https://github.com/presprog/kirby-auto-file-templates.git site
 
 ## 📄 License
 
-MIT License Copyright © 2024 Present Progressive
+MIT License Copyright © 2025 Present Progressive
 
 ----
 
